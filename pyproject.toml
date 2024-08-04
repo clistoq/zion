@@ -23,7 +23,7 @@ dependencies = [
 requires-python = ">=3.6"
 
 [project.scripts]
-zion = "zion.cli.cli:cli"
+zion = "zion.cli:cli"
 
 [tool.setuptools]
-packages = ["zion", "zion.cli"]
+packages = ["zion", "zion.cli", "zion.hypervisor", "zion.domain"]
