@@ -36,17 +36,14 @@ Table of Contents
 > [!NOTE]
 > If you are using a different distribution, please refer to the official documentation of the distribution.
 
-### MacOS
+### Ubuntu 24.04
 
 ```bash
-  brew install qemu libvirt
-  brew services start libvirt
-```
-### Ubuntu/Debian
-
-```bash
+  mkdir -p $HOME/libvirt/{iso,images}
   sudo apt update
-  sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+  sudo apt install qemu-kvm libvirt-dev libvirt-daemon-system libvirt-clients bridge-utils pkg-config python3 python3-pip
+  sudo setfacl -m u:$USER:rw /etc/libvirt/qemu
+  sudo setfacl -m u:libvirt-qemu:rx $HOME/libvirt
   sudo systemctl start libvirtd
   sudo systemctl enable libvirtd #if you want to start libvirtd on boot (not necessary)
 ```
@@ -58,18 +55,87 @@ Table of Contents
 ```bash
   git clone https://github.com/clistoq/zion
   cd zion
+  sudo apt install python3-venv #if you want to use virtualenv; not needed
+  python3 -m venv venv #follow up to the previous step
+  source venv/bin/activate #follow up to the previous step
   pip install .
 ```
 
 ## Usage
 
+[![asciicast](https://asciinema.org/a/Ig3VWkZEAesdPHx99a86XePkf.svg)](https://asciinema.org/a/Ig3VWkZEAesdPHx99a86XePkf)
+
+Main help:
 ```bash
-  zion --help
-  Usage: zion [OPTIONS]
+  Usage: zion [OPTIONS] COMMAND [ARGS]...
+
+  Command line application to manage virtual machines and their components in
+  local environment with QEMU hypervisor.
 
   Options:
     --help  Show this message and exit.
+
+  Commands:
+    domain  Commands to manage domains.
+    hypervisor  Commands to manage the hypervisor.
+    volume  Commands to manage storage pools and volumes.
 ```
+
+Hypervisor help:
+```bash
+  Usage: zion hypervisor [OPTIONS] COMMAND [ARGS]...
+
+  Commands to manage the hypervisor.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    state  Show human-readable status information about the hypervisor.
+```
+
+Domain help:
+```bash
+  Usage: zion domain [OPTIONS] COMMAND [ARGS]...
+
+  Commands to manage domains.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    create    Create a new domain.
+    delete    Delete a domain.
+    duplicate Duplicate a domain.
+    list      List all domains.
+    start     Start a domain.
+    status    Show human-readable status information about a domain.
+    stop      Stop a domain.
+```
+
+Volume help:
+```bash
+  Usage: zion volume [OPTIONS] COMMAND [ARGS]...
+
+  Commands to manage storage pools and volumes.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    create              Create a volume within a storage pool.
+    create-storagepool  Create a new storage pool.
+    delete              Delete a volume from a storage pool.
+    delete-storagepool  Delete a storage pool.
+    list                List volumes in the storage pool.
+    list-storagepools   List all storage pools.
+
+```
+
+### Examples
+
+Here you can find instruction how to provision simple domain with zion.
+[simple-vm](examples/simple-vm/README.md)
 
 ## Development
 
@@ -86,24 +152,24 @@ To be added!
 ### Day 1 - CLI
 
 - [x] Create a CLI application
-- [ ] Create structure of CLI commands
+- [x] Create structure of CLI commands
 
 ### Day 2 - Virtual Machines
 
 #### Hypervisors
 
-- [ ] CLI command group `hypervisors`
-- [ ] CLI command `state`
+- [x] CLI command group `hypervisors`
+- [x] CLI command `status`
 
 #### Domains
 
-- [ ] CLI command group `domains`
-- [ ] CLI command `list`
-- [ ] CLI command `create`
-- [ ] CLI command `delete`
-- [ ] CLI command `start`
-- [ ] CLI command `stop`
-- [ ] CLI command `describe`
+- [x] CLI command group `domains`
+- [x] CLI command `list`
+- [x] CLI command `create`
+- [x] CLI command `delete`
+- [x] CLI command `start`
+- [x] CLI command `stop`
+- [x] CLI command `status`
 - [ ] Prepare test cases
 
 #### Networking
@@ -117,16 +183,16 @@ To be added!
 
 #### Storage
 
-- [ ] CLI command group `storage`
-- [ ] CLI command `list`
-- [ ] CLI command `create`
-- [ ] CLI command `delete`
-- [ ] CLI command `describe`
+- [x] CLI command group `storage`
+- [x] CLI command `list`
+- [x] CLI command `create`
+- [x] CLI command `delete`
+- [x] CLI command `describe`
 - [ ] Prepare test cases
 
 #### Cloning
 
-- [ ] CLI command in `domains` group `clone`
+- [x] CLI command in `domains` group `duplicate`
 - [ ] Prepare test cases
 
 ### Day 3 - Package installation in running VM
@@ -136,9 +202,13 @@ To be added!
 
 ### Day 4 - Virtual Machines Advanced
 
+#### Interactive commands
+
+- [ ] Add options to commands to remove hardcoded paths, etc.
+
 #### Snapshots
 
-#### Kickstart configuration
+#### Kickstart/Preseed configuration
 
 #### Config file support
 

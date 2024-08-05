@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zion"
-version = "0.0.1"
+version = "0.0.2"
 description = "A CLI tool for managing virtual machines"
 authors = [{ name = "Dawid Butrykowski", email = "dawid.butrykowski@cerberus.org.pl" }]
 license = {  text = "MIT" }
@@ -17,13 +17,12 @@ classifiers = [
 ]
 dependencies = [
   "click==8.1.7",
-  "hydra-core==1.3",
   "libvirt-python==10.5.0"
 ]
 requires-python = ">=3.6"
 
 [project.scripts]
-zion = "zion.cli.cli:cli"
+zion = "zion.cli:cli"
 
 [tool.setuptools]
-packages = ["zion", "zion.cli"]
+packages = ["zion", "zion.cli", "zion.hypervisor", "zion.domain", "zion.devices"]
