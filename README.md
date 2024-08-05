@@ -1,7 +1,10 @@
 Command line application to manage virtual machines and their components across different infrastructures: local, cloud,
 hybrid and hypervisors: qemu, kvm, others.
 
-To be added: codecov, asciinemaa
+> [!NOTE]
+> This project is in early development stage. The project is not ready for production use.
+>
+> Tested with Python 3.12 and Ubuntu 24.04.
 
 Table of Contents
 =================
