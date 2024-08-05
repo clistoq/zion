@@ -6,7 +6,7 @@ import libvirt
 from zion.hypervisor import hypervisor
 
 
-@click.command()
+@click.command(help="Delete a domain.")
 @click.argument("domain_name", type=str, required=True)
 def destroy(domain_name):
     conn = hypervisor.open_connection()
@@ -18,8 +18,8 @@ def destroy(domain_name):
                 f"Failed to find the domain {domain_name}", file=sys.stderr
             )
             sys.exit(1)
-        dom.destroy()
-        click.echo("Domain has been destroyed")
+        dom.undefine()
+        click.echo(f"Domain {domain_name} has been destroyed")
         sys.exit(0)
     except libvirt.libvirtError as e:
         click.echo(
